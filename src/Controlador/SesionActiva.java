@@ -14,7 +14,7 @@ public class SesionActiva {
 
     public SesionActiva(Usuario usuario) {
         this.usuario = usuario;
-        this.datosSesion = new DatosSesion(usuario.getNombre());
+        this.datosSesion = new DatosSesion(usuario);
     }
 
     public void menuSesion() {
@@ -39,27 +39,32 @@ public class SesionActiva {
                 }
             }
         } while (!opcion.equals("4"));
+        datosSesion.mostrarHistoria();
     }
 
     private void mostrarTareas() {
         System.out.println("\n-- TUS TAREAS --");
-        for (var t : datosSesion.getTareas()) {
-            System.out.println("- " + t.getDescripcion());
-        }
+        datosSesion.getTareas().forEach(t ->
+                System.out.println("-[" + t.getPrioridad() + "] " + t.getDescripcion())
+        );
     }
 
     private void escribirTarea() {
         System.out.print("Escribe la nueva tarea: ");
         String tarea = scanner.nextLine();
-        datosSesion.agregarTarea(tarea);
+        System.out.print("Prioridad (BAJA, MEDIA, ALTA): ");
+        String nivel = scanner.nextLine().toUpperCase();
+        datosSesion.agregarTarea(tarea, nivel);
     }
 
     private void registrarUsuario() {
         System.out.print("Nuevo usuario: ");
         String nuevo = scanner.nextLine();
+        System.out.print("Correo: ");
+        String correo = scanner.nextLine();
         System.out.print("Clave: ");
         String clave = scanner.nextLine();
-        boolean resultado = gestorUsuarios.registrar(nuevo, clave);
+        boolean resultado = gestorUsuarios.registrar(nuevo, clave, correo);
         if (resultado) System.out.println("Usuario registrado correctamente.");
         else System.out.println("Error al registrar usuario.");
     }

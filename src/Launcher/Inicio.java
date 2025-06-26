@@ -1,11 +1,10 @@
 package Launcher;
 
-import Vista.ConsolaLogin;
+import Vista.LoginView;
 
 public class Inicio {
     public static void main(String[] args) {
-        ConsolaLogin consola = new ConsolaLogin();
-        consola.menu();
+        new LoginView().setVisible(true);
     }
 }
 

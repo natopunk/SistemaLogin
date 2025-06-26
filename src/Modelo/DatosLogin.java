@@ -26,13 +26,18 @@ public class DatosLogin {
                 String linea = lector.nextLine();
                 if (linea.contains(";")) {
                     String[] partes = linea.split(";");
-                    usuarios.add(new Usuario(partes[0], partes[1]));
+                    if (partes.length == 3) {
+                        usuarios.add(new Usuario(partes[0], partes[1], partes[2]));
+                    } else {
+                        System.out.println("Línea mal formada: " + linea);
+                    }
                 }
             }
         } catch (IOException e) {
             System.out.println("Error al leer login.txt: " + e.getMessage());
         }
     }
+
 
     public ArrayList<Usuario> getUsuarios() {
         return usuarios;

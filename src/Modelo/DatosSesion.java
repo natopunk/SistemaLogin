@@ -7,9 +7,12 @@ import java.util.Scanner;
 public class DatosSesion {
     private final String archivo;
     private final ArrayList<Tarea> tareas = new ArrayList<>();
+    private final HistorialSesion historialSesion = new HistorialSesion();
+    private final Usuario usuario;
 
-    public DatosSesion(String usuario) {
-        this.archivo = usuario + "_todo.txt";
+    public DatosSesion(Usuario usuario) {
+        this.usuario = usuario;
+        this.archivo = usuario.getNombre() + "_todo.txt";
         crearArchivoSiNoExiste();
         cargarTareas();
     }
@@ -20,7 +23,7 @@ public class DatosSesion {
             try {
                 f.createNewFile();
             } catch (IOException e) {
-                System.out.println("Error al crear archivo: " + e.getMessage());
+                System.out.println("Error creando archivo de tareas: " + e.getMessage());
             }
         }
     }
@@ -29,8 +32,9 @@ public class DatosSesion {
         try (Scanner lector = new Scanner(new File(archivo))) {
             while (lector.hasNextLine()) {
                 String linea = lector.nextLine().trim();
-                if (!linea.isEmpty()) {
-                    tareas.add(new Tarea(linea));
+                if (!linea.isEmpty() && linea.contains(";")) {
+                    String[] partes = linea.split(";");
+                    tareas.add(new Tarea(partes[0], Prioridad.valueOf(partes[1])));
                 }
             }
         } catch (IOException e) {
@@ -38,8 +42,9 @@ public class DatosSesion {
         }
     }
 
-    public void agregarTarea(String descripcion) {
-        Tarea nueva = new Tarea(descripcion);
+
+    public void agregarTarea(String descripcion, String prioridad) {
+        Tarea nueva = new Tarea(descripcion, Prioridad.valueOf(prioridad));
         tareas.add(nueva);
         try (FileWriter writer = new FileWriter(archivo, true)) {
             writer.write(descripcion + "\n");
@@ -51,6 +56,21 @@ public class DatosSesion {
     public ArrayList<Tarea> getTareas() {
         return tareas;
     }
+
+    public void mostrarHistoria() {
+        historialSesion.mostrar();
+    }
+
+    public HistorialSesion getHistorialSesion() {
+        return historialSesion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
 }
+
+
+
 
 

@@ -18,9 +18,9 @@ public class GestorUsuarios {
         }
     }
 
-    public boolean registrar(String nombre, String clave) {
+    public boolean registrar(String nombre, String clave, String correo) {
         try (FileWriter writer = new FileWriter(archivo, true)) {
-            writer.write(nombre + ";" + clave + "\n");
+            writer.write(nombre + ";" + clave + ";" + correo + "\n");
             return true;
         } catch (IOException e) {
             System.out.println("Error al registrar usuario: " + e.getMessage());
