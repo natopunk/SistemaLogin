@@ -13,20 +13,25 @@ public class ConsolaLogin {
     private final Login login = new Login();
 
     public void menu() {
+        System.out.println("\n=== BIENVENIDO AL SISTEMA ===");
         manejarLogin();
     }
 
     private void manejarLogin() {
         System.out.print("Usuario: ");
         String usuario = scanner.nextLine();
-        System.out.print("Clave: ");
+        System.out.print("Contraseña: ");
         String clave = scanner.nextLine();
-        Usuario u = login.autenticar(usuario, clave, datos);
-        if (u != null) {
-            new SesionActiva(u).menuSesion();
+
+        Usuario autenticado = login.autenticar(usuario, clave, datos);
+        if (autenticado != null) {
+            SesionActiva sesion = new SesionActiva(autenticado);
+            sesion.menuSesion();
         } else {
-            System.out.println("Error de autenticación.");
+            System.out.println("Credenciales inválidas.\n");
+            menu();
         }
     }
 }
+
 
